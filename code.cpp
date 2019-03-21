@@ -51,7 +51,7 @@ struct PageDesc
 #define PAGE_INIT( Desc, Addr, Color )              \
     {                                               \
         (Desc).uKey = CALC_PAGE_KEY( Addr, Color ); \
-        (Desc).next = (Desc).prev = NULL;           \
+        (Desc).next =  NULL; (Desc).prev = NULL;          \   /// too many =
     }
         
 
@@ -65,7 +65,7 @@ void PageStrgInit()
 
 PageDesc* PageFind( void* ptr, char color )
 {
-	for( PageDesc* Pg = PageStrg[color]; Pg; Pg = Pg->next );
+	for( PageDesc* Pg = PageStrg[color]; Pg; Pg = Pg->next );	/// cycle does nothing or it's only for list moving?
         if( Pg->uKey == CALC_PAGE_KEY(ptr,color) )
            return Pg;                                                                                                                                     
     return NULL;
@@ -112,7 +112,7 @@ void PageDump()
 		PG_COLOR_NAME(PG_COLOR_GREEN)
 	};
 
-	while( color <= PG_COLOR_RED )
+	while( color <= PG_COLOR_RED )                    
 	{
 		printf("PgStrg[(%s) %u] ********** \n", color, PgColorName[color] );
 		for( PageDesc* Pg = PageStrg[++color]; Pg != NULL; Pg = Pg->next )
